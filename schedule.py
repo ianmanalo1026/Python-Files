@@ -18,14 +18,10 @@ cur = con.cursor()
 cg = CoinGeckoAPI()
 
 class TickerScheduler:
-    
-    def __init__(self, coin):
-        self.coin = coin
-        
-    
-    def ticker_trigger(self, content):
-        self.content = cg.get_price(ids=['bitcoin', 'ripple', 'ethereum'], vs_currencies=["php","usd","eur"])
-        return self.content
+
+    def ticker_trigger(self):
+        content = cg.get_price(ids=['bitcoin', 'ripple', 'ethereum'], vs_currencies=["php","usd","eur"])
+        return content
         
 show = TickerScheduler()
 print(show.ticker_trigger)
