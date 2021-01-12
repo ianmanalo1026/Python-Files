@@ -5,32 +5,29 @@ import datetime
 import time
 
 
-
-con = psycopg2.connect(
-    database="sample",
-    user="postgres",
-    password='soulgun21',
-    host='127.0.0.1',
-    port='5433'
-)
-
-cur = con.cursor()
-cg = CoinGeckoAPI()
-
-class TickerScheduler:
-
+class TickerScheduler():
+    
     def ticker_trigger(self):
+        cg = CoinGeckoAPI()
         content = cg.get_price(ids=['bitcoin', 'ripple', 'ethereum'], vs_currencies=["php","usd","eur"])
-        return content
+        print(content)
+
+    def ticker_timer(self):
+        print('Timestamp: {:%Y-%b-%d %H:%M:%S}'.format(datetime.datetime.now()))
         
-show = TickerScheduler()
-print(show.ticker_trigger)
-        
-"""      
-class DownloadData(TickerScheduler):
+
+class HistoricalData():
+    
     
     def data_download(self):
-
+        con = psycopg2.connect(
+            database="sample",
+            user="postgres",
+            password='soulgun21',
+            host='127.0.0.1',
+            port='5433'
+            )
+        cur = con.cursor()
         content = cg.get_coin_market_chart_range_by_id(id='bitcoin', vs_currency='usd', from_timestamp='1609718400', to_timestamp='1609804800')
         for key, values in content.items():
             for value in values:
@@ -45,6 +42,24 @@ class DownloadData(TickerScheduler):
 
         cur.close()
         con.close()
+    
+show = TickerScheduler()
+
+schedule.every(5).seconds.do(show.ticker_timer)
+schedule.every(5).seconds.do(show.ticker_trigger)
+
+while True:
+    schedule.run_pending()
+    time.sleep(1)
+
+
+
+"""      
+
+
+class DownloadData(TickerScheduler):
+    
+
 
 
     
