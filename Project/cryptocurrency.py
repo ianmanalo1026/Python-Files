@@ -11,7 +11,8 @@ class TickerScheduler():
         cg = CoinGeckoAPI()
         content = cg.get_price(ids=['bitcoin', 'ripple', 'ethereum'], vs_currencies=["php","usd","eur"])
         print(content)
-
+    
+    @staticmethod
     def ticker_timer(self):
         print('Timestamp: {:%Y-%b-%d %H:%M:%S}'.format(datetime.datetime.now()))
         
